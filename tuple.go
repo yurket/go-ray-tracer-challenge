@@ -1,4 +1,4 @@
-package ray_tracer
+package main
 
 import "math"
 
