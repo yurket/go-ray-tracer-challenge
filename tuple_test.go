@@ -8,7 +8,7 @@ import (
 )
 
 func TestCreatingZeroTuple(t *testing.T) {
-	point := Tuple()
+	point := newTuple()
 	if point.x != 0 || point.y != 0 || point.z != 0 || point.w != 0 {
 		t.Error("All components should be zero!")
 		t.Log("point: ", point)
@@ -22,18 +22,18 @@ func TestVectorCreation(t *testing.T) {
 }
 
 func TestIsPoint(t *testing.T) {
-	p := tuple{4.3, -4.2, 3.1, 0.99999}
+	p := Tuple{4.3, -4.2, 3.1, 0.99999}
 	require.True(t, IsPoint(p), "tuple %v must be a point, because w == 1.0!", p)
 }
 
 func TestIsVector(t *testing.T) {
-	v := tuple{4.3, -4.2, 3.1, 0.0}
+	v := Tuple{4.3, -4.2, 3.1, 0.0}
 	require.True(t, IsVector(v), "tuple %v must be considered vector, because w == 0.0!", v)
 }
 
 // I'm not sure if such a tuple should be erroneus, so for now let it be
 func TestNeitherVectorNorPoint(t *testing.T) {
-	s := tuple{4, 3, 2, 0.5}
+	s := Tuple{4, 3, 2, 0.5}
 
 	require.False(t, IsVector(s) || IsPoint(s), "tuple with w == %v should be neither vector nor point!", s.w)
 }
@@ -46,11 +46,11 @@ func TestTupleEquality(t *testing.T) {
 }
 
 func TestAddition(t *testing.T) {
-	p := tuple{3, -2, 5, 1}
-	v := tuple{-2, 3, 1, 0}
+	p := Tuple{3, -2, 5, 1}
+	v := Tuple{-2, 3, 1, 0}
 
 	res := Add(p, v)
-	expect := tuple{1, 1, 6, 1}
+	expect := Tuple{1, 1, 6, 1}
 
 	require.True(t, equal(res, expect))
 	require.True(t, IsPoint(res))
@@ -94,35 +94,35 @@ func TestSubtractingPointFromVectorDoesntMakeSense(t *testing.T) {
 }
 
 func TestNegation(t *testing.T) {
-	s := tuple{1, 2, -3, -4}
+	s := Tuple{1, 2, -3, -4}
 
 	res := Negate(s)
-	expect := tuple{-1, -2, 3, 4}
+	expect := Tuple{-1, -2, 3, 4}
 
 	require.True(t, equal(res, expect))
 }
 
 func TestMul(t *testing.T) {
-	s := tuple{1, 2, -3, -4}
+	s := Tuple{1, 2, -3, -4}
 
 	res := Mul(s, 4)
-	require.True(t, equal(res, tuple{4, 8, -12, -16}))
+	require.True(t, equal(res, Tuple{4, 8, -12, -16}))
 
 	res = Mul(s, 0.5)
-	require.True(t, equal(res, tuple{0.5, 1, -1.5, -2}))
+	require.True(t, equal(res, Tuple{0.5, 1, -1.5, -2}))
 
 }
 
 func TestDiv(t *testing.T) {
-	s := tuple{1, 2, -3, -4}
+	s := Tuple{1, 2, -3, -4}
 
 	res := Div(s, 2)
-	expect := tuple{0.5, 1, -1.5, -2}
+	expect := Tuple{0.5, 1, -1.5, -2}
 	require.True(t, equal(res, expect))
 }
 
 func TestZeroDivisionPanics(t *testing.T) {
-	s := tuple{1, 2, -3, -4}
+	s := Tuple{1, 2, -3, -4}
 
 	require.Panics(t, func() { Div(s, 0) })
 }
@@ -140,7 +140,7 @@ func TestMagnitude(t *testing.T) {
 
 func TestMagnitudPanicsOnNonVectors(t *testing.T) {
 	p := Point(1, 2, 3)
-	nonV := tuple{1, 1, 1, 4}
+	nonV := Tuple{1, 1, 1, 4}
 
 	require.Panics(t, func() { Magnitude(p) })
 	require.Panics(t, func() { Magnitude(nonV) })
@@ -158,7 +158,7 @@ func TestNormalization(t *testing.T) {
 
 func TestNormalizationPanicsOnNonVectors(t *testing.T) {
 	p := Point(1, 2, 3)
-	nonV := tuple{1, 1, 1, 4}
+	nonV := Tuple{1, 1, 1, 4}
 
 	require.Panics(t, func() { Normalize(p) })
 	require.Panics(t, func() { Normalize(nonV) })

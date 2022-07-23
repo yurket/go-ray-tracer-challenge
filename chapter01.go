@@ -3,13 +3,13 @@ package main
 import "fmt"
 
 type projectile struct {
-	position tuple
-	velocity tuple
+	position Tuple
+	velocity Tuple
 }
 
 type environment struct {
-	gravity tuple
-	wind    tuple
+	gravity Tuple
+	wind    Tuple
 }
 
 func tick(env environment, proj projectile) projectile {
